@@ -116,5 +116,3 @@ go test
 ```
 
 Ensure that all test cases pass successfully.
-
-Please note that this API is for demonstration purposes and does not include features such as database integration or authentication. For a production-ready application, additional components like a database and authentication mechanisms should be implemented.
