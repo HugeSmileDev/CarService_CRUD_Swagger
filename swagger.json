@@ -1,0 +1,187 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/cars": {
+      "get": {
+        "tags": [
+          "getCars"
+        ],
+        "summary": "Retrieves the list of cars.",
+        "operationId": "getAllCars",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/carsResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "createCar"
+        ],
+        "summary": "Creates a new car.",
+        "operationId": "createCar",
+        "parameters": [
+          {
+            "description": "The car to create.",
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/carCreatedResponse"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": [
+          "getCars"
+        ],
+        "summary": "Retrieves a car by ID.",
+        "operationId": "getCarByID",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the car to retrieve",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/carResponse"
+          },
+          "404": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "updateCar"
+        ],
+        "summary": "Updates an existing car.",
+        "operationId": "updateCar",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the car to update.",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The updated car data.",
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/carResponse"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "404": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Car": {
+      "type": "object",
+      "title": "Car represents the structure of a car.",
+      "properties": {
+        "category": {
+          "type": "string",
+          "x-go-name": "Category"
+        },
+        "color": {
+          "type": "string",
+          "x-go-name": "Color"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "make": {
+          "type": "string",
+          "x-go-name": "Make"
+        },
+        "mileage": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Mileage"
+        },
+        "model": {
+          "type": "string",
+          "x-go-name": "Model"
+        },
+        "package": {
+          "type": "string",
+          "x-go-name": "Package"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Price"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Year"
+        }
+      },
+      "x-go-package": "car-service"
+    }
+  },
+  "responses": {
+    "carCreatedResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/Car"
+      }
+    },
+    "carResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/Car"
+      }
+    },
+    "carsResponse": {
+      "description": "",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Car"
+        }
+      }
+    }
+  }
+}
