@@ -3,6 +3,13 @@
 
 The Car Service API is a RESTful web service that allows users to manage cars. It provides endpoints to retrieve a list of cars, retrieve a car by its ID, create a new car, update an existing car, and delete a car by its ID.
 
+**Table of Contents**
+
+1. [Endpoints](#endpoints)
+2. [Data Models](#data-models)
+3. [Test Cases](#test-cases)
+4. [How to Run](#how-to-run)
+
 ## Endpoints
 
 ### Get All Cars
