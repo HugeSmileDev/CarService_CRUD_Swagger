@@ -1,13 +1,7 @@
-**Car Service API**
+
+# Car Service API
 
 The Car Service API is a RESTful web service that allows users to manage cars. It provides endpoints to retrieve a list of cars, retrieve a car by its ID, create a new car, update an existing car, and delete a car by its ID.
-
-**Table of Contents**
-
-1. [Endpoints](#endpoints)
-2. [Data Models](#data-models)
-3. [Test Cases](#test-cases)
-4. [How to Run](#how-to-run)
 
 ## Endpoints
 
@@ -69,6 +63,13 @@ The Car Service API is a RESTful web service that allows users to manage cars. I
   - 404: Car not found.
   - 500: Server error.
 
+### Swagger UI
+
+The API provides a Swagger UI endpoint to interactively explore and test the available endpoints.
+
+- **URL**: `/swagger-ui/`
+- **Note**: Ensure the API server is running, and then visit the Swagger UI endpoint in your web browser.
+
 ## Data Models
 
 ### Car
@@ -93,7 +94,9 @@ The API includes test cases to ensure the correctness of its functionalities. Th
 - `TestGetCarByID`: Tests the "Get Car by ID" endpoint to retrieve a car by its ID.
 - `TestCreateCar`: Tests the "Create Car" endpoint to create a new car.
 - `TestUpdateCar`: Tests the "Update Car" endpoint to update an existing car.
-- `TestDeleteCar`: Tests the "Delete Car" endpoint to delete a car by its ID.
+- `TestDeleteCar`: Tests the "Delete Car" endpoint with two types of scenarios:
+  - Test the case when attempting to delete an existing car with a valid ID.
+  - Test the case when attempting to delete an unregistered car with an invalid ID.
 
 ## How to Run
 
@@ -116,3 +119,4 @@ go test
 ```
 
 Ensure that all test cases pass successfully.
+```
