@@ -38,8 +38,6 @@ func TestGetAllCars(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error decoding response body: %v", err)
 	}
-
-	// Add your custom assertions here, like checking the length of the response, etc.
 }
 
 func TestGetCarByID(t *testing.T) {
@@ -204,6 +202,84 @@ func TestUpdateCar(t *testing.T) {
 	// Check if the updated car matches the expected car data
 	if !equalCars(updatedCarData, updatedCarResponse) {
 		t.Errorf("Expected updated car %+v, but got %+v", updatedCarData, updatedCarResponse)
+	}
+}
+
+func TestDeleteCar(t *testing.T) {
+	// Initialize the test data
+	testCarID := "JHk290Xj"
+
+	// Test the case when the car is found and deleted
+	req, err := http.NewRequest("DELETE", "/cars/"+testCarID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		deleteCar(w, r, testCarID)
+	})
+
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status code %d, but got %d", http.StatusOK, rr.Code)
+	}
+
+	// Check the content type
+	expectedContentType := "application/json"
+	actualContentType := rr.Header().Get("Content-Type")
+	if actualContentType != expectedContentType {
+		t.Errorf("Expected Content-Type %s, but got %s", expectedContentType, actualContentType)
+	}
+
+	// Check the response body
+	var responseMessage map[string]string
+	err = json.NewDecoder(rr.Body).Decode(&responseMessage)
+	if err != nil {
+		t.Errorf("Error decoding response body: %v", err)
+	}
+
+	expectedMessage := "Successfully deleted car with ID: " + testCarID
+	actualMessage, ok := responseMessage["message"]
+	if !ok {
+		t.Error("Expected response message key \"message\" not found")
+	} else if actualMessage != expectedMessage {
+		t.Errorf("Expected response message \"%s\", but got \"%s\"", expectedMessage, actualMessage)
+	}
+
+	// Test the case when the car is not found
+	notFoundID := "nonExistentID"
+	req, err = http.NewRequest("DELETE", "/cars/"+notFoundID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr = httptest.NewRecorder()
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusNotFound {
+		t.Errorf("Expected status code %d, but got %d", http.StatusNotFound, rr.Code)
+	}
+
+	// Check the content type for the not found case
+	actualContentType = rr.Header().Get("Content-Type")
+	if actualContentType != expectedContentType {
+		t.Errorf("Expected Content-Type %s, but got %s", expectedContentType, actualContentType)
+	}
+
+	// Check the response body for the not found case
+	err = json.NewDecoder(rr.Body).Decode(&responseMessage)
+	if err != nil {
+		t.Errorf("Error decoding response body: %v", err)
+	}
+
+	expectedMessage = "Car not found"
+	actualMessage, ok = responseMessage["message"]
+	if !ok {
+		t.Error("Expected response message key \"message\" not found")
+	} else if actualMessage != expectedMessage {
+		t.Errorf("Expected response message \"%s\", but got \"%s\"", expectedMessage, actualMessage)
 	}
 }
 

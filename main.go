@@ -71,6 +71,10 @@ var cars = []Car{
 	},
 }
 
+type responseMessage struct {
+	Message string `json:"message"`
+}
+
 var ErrCarNotFound = errors.New("car not found")
 
 func findCarByID(id string) (*Car, error) {
@@ -172,6 +176,9 @@ func handleCarByID(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPut:
 		log.Println("Update car by ID")
 		updateCar(w, r, id)
+	case http.MethodDelete:
+		log.Println("Delete car by ID")
+		deleteCar(w, r, id)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -182,8 +189,6 @@ func main() {
 	mux.HandleFunc("/cars/", handleCarByID)
 
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
-
-		log.Println("Here is Swagger.json URL")
 		filePath := "./swagger.json"
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -324,4 +329,41 @@ func updateCar(w http.ResponseWriter, r *http.Request, id string) {
 
 	// Respond with the details of the updated car
 	json.NewEncoder(w).Encode(car)
+}
+func deleteCar(w http.ResponseWriter, r *http.Request, id string) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Add observability: Log the request
+	log.Printf("DELETE /cars/%s", id)
+
+	// Find the index of the car in the slice
+	index := -1
+	for i, car := range cars {
+		if car.ID == id {
+			index = i
+			break
+		}
+	}
+
+	// If the car is not found, return 404 Not Found
+	if index == -1 {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(responseMessage{Message: "Car not found"})
+		return
+	}
+
+	// Remove the car from the slice
+	cars = append(cars[:index], cars[index+1:]...)
+
+	// Set the Content-Type header to "application/json"
+	w.Header().Set("Content-Type", "application/json")
+
+	// Respond with a success message
+	successMessage := "Successfully deleted car with ID: " + id
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(responseMessage{Message: successMessage})
 }
