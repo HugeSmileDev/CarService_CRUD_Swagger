@@ -1,69 +1,120 @@
-## Car Inventory API
+**Car Service API**
 
-The Car Inventory API allows you to manage a collection of cars, including retrieving all cars, getting a car by its ID, adding a new car, and updating an existing car.
+The Car Service API is a RESTful web service that allows users to manage cars. It provides endpoints to retrieve a list of cars, retrieve a car by its ID, create a new car, update an existing car, and delete a car by its ID.
 
-### Base URL
+**Table of Contents**
 
-`http://localhost:8080`
+1. [Endpoints](#endpoints)
+2. [Data Models](#data-models)
+3. [Test Cases](#test-cases)
+4. [How to Run](#how-to-run)
 
-### Endpoints
+## Endpoints
 
-#### 1. Get All Cars
+### Get All Cars
 
-- URL: `/cars`
-- Method: `GET`
-- Description: Retrieves a list of all available cars in the inventory.
-- Response: Returns a JSON array containing car objects with the following properties:
-  - `make` (string): The make of the car.
-  - `model` (string): The model of the car.
-  - `package` (string): The package of the car.
-  - `color` (string): The color of the car.
-  - `year` (int): The manufacturing year of the car.
-  - `category` (string): The category of the car (e.g., Sedan, SUV, Truck).
-  - `mileage` (int): The mileage of the car.
-  - `price` (int): The price of the car.
-  - `id` (string): The unique identifier of the car.
+- **Endpoint**: `/cars`
+- **HTTP Method**: GET
+- **Description**: Retrieves the list of all cars.
+- **Responses**:
+  - 200: Returns an array of cars.
+  - 500: Server error.
 
-#### 2. Get Car by ID
+### Get Car by ID
 
-- URL: `/cars/{id}`
-- Method: `GET`
-- Description: Retrieves a specific car by its unique ID.
-- URL Parameters:
-  - `{id}` (string): The unique identifier of the car to be retrieved.
-- Response: Returns a JSON object representing the car with the provided ID or a 404 error if the car is not found.
+- **Endpoint**: `/cars/{id}`
+- **HTTP Method**: GET
+- **Description**: Retrieves a car by its ID.
+- **Parameters**:
+  - `id` (path) [Required]: The ID of the car to retrieve.
+- **Responses**:
+  - 200: Returns the car details.
+  - 404: Car not found.
+  - 500: Server error.
 
-#### 3. Add New Car
+### Create Car
 
-- URL: `/cars/new`
-- Method: `POST`
-- Description: Adds a new car to the inventory.
-- Request Body: The payload should be a JSON object containing the car details with the following properties:
-  - `make` (string): The make of the car.
-  - `model` (string): The model of the car.
-  - `package` (string): The package of the car.
-  - `color` (string): The color of the car.
-  - `year` (int): The manufacturing year of the car.
-  - `category` (string): The category of the car (e.g., Sedan, SUV, Truck).
-  - `mileage` (int): The mileage of the car.
-  - `price` (int): The price of the car.
-- Response: Returns a JSON object representing the newly added car with a unique `id` field.
+- **Endpoint**: `/cars`
+- **HTTP Method**: POST
+- **Description**: Creates a new car.
+- **Request Body**: Car object in JSON format.
+- **Responses**:
+  - 201: Returns the created car details.
+  - 400: Bad request (e.g., invalid data).
+  - 500: Server error.
 
-#### 4. Update Existing Car
+### Update Car
 
-- URL: `/cars/update`
-- Method: `PUT`
-- Description: Updates the details of an existing car in the inventory.
-- Request Body: The payload should be a JSON object containing the updated car details with the following properties:
-  - `id` (string): The unique identifier of the car to be updated (this field is required and cannot be changed).
-  - `make` (string): The updated make of the car.
-  - `model` (string): The updated model of the car.
-  - `package` (string): The updated package of the car.
-  - `color` (string): The updated color of the car.
-  - `year` (int): The updated manufacturing year of the car.
-  - `category` (string): The updated category of the car (e.g., Sedan, SUV, Truck).
-  - `mileage` (int): The updated mileage of the car.
-  - `price` (int): The updated price of the car.
-- Response: Returns a JSON object representing the updated car with the provided ID or a 404 error if the car is not found.
+- **Endpoint**: `/cars/{id}`
+- **HTTP Method**: PUT
+- **Description**: Updates an existing car by its ID.
+- **Parameters**:
+  - `id` (path) [Required]: The ID of the car to update.
+- **Request Body**: Car object in JSON format containing the updated data.
+- **Responses**:
+  - 200: Returns the updated car details.
+  - 400: Bad request (e.g., invalid data).
+  - 404: Car not found.
+  - 500: Server error.
 
----
+### Delete Car
+
+- **Endpoint**: `/cars/{id}`
+- **HTTP Method**: DELETE
+- **Description**: Deletes a car by its ID.
+- **Parameters**:
+  - `id` (path) [Required]: The ID of the car to delete.
+- **Responses**:
+  - 200: Car successfully deleted.
+  - 404: Car not found.
+  - 500: Server error.
+
+## Data Models
+
+### Car
+
+Represents the structure of a car.
+
+- `category` (string): The category of the car.
+- `color` (string): The color of the car.
+- `id` (string): The unique identifier of the car.
+- `make` (string): The make of the car.
+- `mileage` (integer): The mileage of the car.
+- `model` (string): The model of the car.
+- `package` (string): The package of the car.
+- `price` (integer): The price of the car.
+- `year` (integer): The manufacturing year of the car.
+
+## Test Cases
+
+The API includes test cases to ensure the correctness of its functionalities. The following test cases are implemented:
+
+- `TestGetAllCars`: Tests the "Get All Cars" endpoint to retrieve a list of all cars.
+- `TestGetCarByID`: Tests the "Get Car by ID" endpoint to retrieve a car by its ID.
+- `TestCreateCar`: Tests the "Create Car" endpoint to create a new car.
+- `TestUpdateCar`: Tests the "Update Car" endpoint to update an existing car.
+- `TestDeleteCar`: Tests the "Delete Car" endpoint to delete a car by its ID.
+
+## How to Run
+
+To run the Car Service API, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Open the terminal and navigate to the root directory of the project.
+3. Execute the following command to start the server:
+
+```bash
+go run main.go
+```
+
+4. The server will start running at `http://localhost:8080`.
+
+5. To run the test cases, use the following command:
+
+```bash
+go test
+```
+
+Ensure that all test cases pass successfully.
+
+Please note that this API is for demonstration purposes and does not include features such as database integration or authentication. For a production-ready application, additional components like a database and authentication mechanisms should be implemented.
