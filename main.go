@@ -155,6 +155,27 @@ type UpdateCarParams struct {
 //   404: errorResponse
 //   500: errorResponse
 
+// swagger:parameters deleteCar
+type DeleteCarParams struct {
+	// The ID of the car to delete.
+	// in: path
+	ID string `json:"id"`
+}
+
+// swagger:response carDeletedResponse
+type CarDeletedResponse struct {
+	// The message indicating the car was deleted successfully.
+	// in: body
+	Body responseMessage
+}
+
+// swagger:route DELETE /cars/{id} deleteCar deleteCar
+// Deletes a car by ID.
+// Responses:
+//   200: carDeletedResponse
+//   404: errorResponse
+//   500: errorResponse
+
 func handleAllCars(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:

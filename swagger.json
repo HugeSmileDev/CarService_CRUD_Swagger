@@ -110,6 +110,34 @@
             "$ref": "#/responses/errorResponse"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "deleteCar"
+        ],
+        "summary": "Deletes a car by ID.",
+        "operationId": "deleteCar",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the car to delete.",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/carDeletedResponse"
+          },
+          "404": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "500": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
       }
     }
   },
@@ -159,6 +187,16 @@
         }
       },
       "x-go-package": "car-service"
+    },
+    "responseMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "car-service"
     }
   },
   "responses": {
@@ -166,6 +204,12 @@
       "description": "",
       "schema": {
         "$ref": "#/definitions/Car"
+      }
+    },
+    "carDeletedResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/responseMessage"
       }
     },
     "carResponse": {
